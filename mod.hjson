@@ -2,7 +2,7 @@ name: shared-campaign-research
 displayName: Shared Campaign Research
 author: osp54
 description: A co-op campaign mod for shared research. Players who joined the host can request research from the research screen, and the result is applied to the current campaign.
-version: 0.2.5-alpha.1
+version: 0.2.5-alpha.2
 minGameVersion: 160
 java: true
 main: com.ospx.sharedcampaignresearch.SharedCampaignResearchMod
