@@ -129,6 +129,9 @@ public final class NetworkRegistrar {
         }
 
         String localizedMessage = localizeResponseMessage(packet);
+        if (Vars.ui != null && !StringsCompat.isBlank(localizedMessage)) {
+            Vars.ui.showInfoToast(localizedMessage, 3f);
+        }
 
         SharedCampaignResearchMod.log(
             "research response received: node=" + packet.nodeName + ", status=" + packet.status + ", message=" + localizedMessage

@@ -4,6 +4,9 @@ import arc.Core;
 import arc.Events;
 import arc.graphics.Color;
 import arc.scene.Element;
+import arc.scene.event.ClickListener;
+import arc.scene.event.InputEvent;
+import arc.scene.ui.ImageButton;
 import arc.scene.ui.Label;
 import arc.scene.ui.TextButton;
 import arc.scene.ui.layout.Table;
@@ -83,6 +86,8 @@ public final class ResearchUiRegistrar {
         }
 
         ensureClientSnapshot(dialog.lastNode);
+        syncClientSelectability(dialog);
+        installNodeRequestListeners(dialog);
         syncClientTotals(dialog, dialog.lastNode);
         TechNode hoveredNode = dialog.view.hoverNode == null ? null : (TechNode) dialog.view.hoverNode.userObject;
         if (shouldRefreshInfo(dialog.lastNode, hoveredNode)) {
@@ -91,6 +96,36 @@ public final class ResearchUiRegistrar {
             refreshInfoTableLayout(dialog.view.infoTable);
             lastRootNode = dialog.lastNode;
             lastHoveredNode = hoveredNode;
+        }
+    }
+
+    private void syncClientSelectability(ResearchDialog dialog) {
+        for (ResearchDialog.TechTreeNode treeNode : dialog.nodes) {
+            if (treeNode.node.content != null
+                && validator.canClientRequestResearch(treeNode.node.content.name)) {
+                treeNode.selectable = true;
+            }
+        }
+    }
+
+    private void installNodeRequestListeners(ResearchDialog dialog) {
+        for (Element child : dialog.view.getChildren()) {
+            if (!(child instanceof ImageButton button) || !(button.userObject instanceof TechNode node)) {
+                continue;
+            }
+            if ("shared-campaign-research-node".equals(button.name)) {
+                continue;
+            }
+
+            button.name = "shared-campaign-research-node";
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    if (node.content != null && validator.canClientRequestResearch(node.content.name)) {
+                        requestResearch(rootName(dialog.lastNode), node.content.name);
+                    }
+                }
+            });
         }
     }
 

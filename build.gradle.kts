@@ -11,8 +11,6 @@ plugins {
 group = "com.ospx"
 version = "0.2.5-alpha.1"
 
-val jabelVersion = "93fde537c7"
-
 base {
     archivesName.set("shared-campaign-research")
 }
@@ -22,7 +20,7 @@ java {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
     sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -33,15 +31,14 @@ repositories {
 }
 
 toxopid {
-    compileVersion = "v155"
-    runtimeVersion = "v155"
+    compileVersion = "v160"
+    runtimeVersion = "v160"
     platforms = setOf(ModPlatform.DESKTOP, ModPlatform.ANDROID)
 }
 
 dependencies {
     compileOnly(toxopid.dependencies.arcCore)
     compileOnly(toxopid.dependencies.mindustryCore)
-    annotationProcessor("com.github.Anuken:jabel:$jabelVersion")
 
     testImplementation(toxopid.dependencies.arcCore)
     testImplementation(toxopid.dependencies.mindustryCore)
@@ -64,7 +61,7 @@ tasks.processResources {
 
 tasks.withType<JavaCompile>().configureEach {
     sourceCompatibility = JavaVersion.VERSION_17.toString()
-    targetCompatibility = JavaVersion.VERSION_1_8.toString()
+    targetCompatibility = JavaVersion.VERSION_17.toString()
     options.encoding = "UTF-8"
-    options.compilerArgs.addAll(listOf("--release", "8"))
+    options.compilerArgs.addAll(listOf("--release", "17"))
 }

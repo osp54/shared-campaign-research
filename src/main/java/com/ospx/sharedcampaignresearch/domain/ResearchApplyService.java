@@ -2,7 +2,10 @@ package com.ospx.sharedcampaignresearch.domain;
 
 import com.ospx.sharedcampaignresearch.SharedCampaignResearchMod;
 import java.util.Objects;
+import mindustry.Vars;
 import mindustry.content.TechTree.TechNode;
+import mindustry.ctype.UnlockableContent;
+import mindustry.gen.Call;
 import mindustry.type.ItemStack;
 
 public final class ResearchApplyService {
@@ -76,13 +79,21 @@ public final class ResearchApplyService {
     }
 
     private void unlock(TechNode node) {
-        node.content.unlock();
+        unlockContent(node.content);
 
         TechNode parent = node.parent;
         while (parent != null) {
-            parent.content.unlock();
+            unlockContent(parent.content);
             parent = parent.parent;
         }
+    }
+
+    private void unlockContent(UnlockableContent content) {
+        content.unlock();
+        if (Vars.state != null && Vars.state.rules != null) {
+            Vars.state.rules.researched.add(content);
+        }
+        Call.researched(content);
     }
 
     public enum ApplyResearchResult {
