@@ -125,7 +125,6 @@ public final class ResearchRules {
         return isClientCampaign()
             && node != null
             && isNodeLocked(node)
-            && areParentsUnlocked(node)
-            && !hasIncompleteObjectives(node);
+            && areParentsUnlocked(node);
     }
 }
